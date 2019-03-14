@@ -19,7 +19,16 @@ public class ProductManager {
 	 */
 	public Product getProductByName(String productName) throws SuperMarketException {
 		LOG.info("Request to get a product by name: " + productName);
-		return null;
+		Product product = null;
+		if (productName != null && !productName.trim().equals("")) {
+			product = productDAO.findAll().stream()
+					.filter(productItem -> productItem.getName().toLowerCase().equals(productName.toLowerCase()))
+					.findFirst()
+					.get();
+		} else {
+			throw new SuperMarketException("Please provide a valid product name!");
+		}
+		return product;
 	}
 	
 	/**
@@ -31,7 +40,11 @@ public class ProductManager {
 	 */
 	public Product addProduct(Product product) throws SuperMarketException {
 		LOG.info("Request to add a product: " + product);
-		
-		return null;
+		if (product != null) {
+			product = productDAO.save(product);
+		} else {
+			throw new SuperMarketException("Please provide a valid product name!");
+		}
+		return product;
 	}
 }
